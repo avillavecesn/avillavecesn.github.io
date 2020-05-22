@@ -1,0 +1,166 @@
+<html>
+<script language=JavaScript>
+
+// ****************************************************************
+// HandoutBrowser.js Editable Settings
+// More about HandoutBrowser.js at
+//   Web := http://katlas.math.toronto.edu/drorbn/?title=HandoutBrowser.js
+// (c) Copyleft Dror Bar-Natan, 2007-2009. See
+//   http://www.math.toronto.edu/~drorbn/Copyleft/index.html
+// ****************************************************************
+
+// "handout_name" is the name of this handout.
+
+handout_name = "Tertulia Matemática 2";
+
+// "title" is the html title of this handout, to be shown on the browser's
+// title bar.
+
+title = "El Main Gap de Shelah: una visión panorámica";
+
+// "navigation_text" is the "up navigation" text for this handout, including
+// links. It is shown on the upper left corner of the handout except when
+// hidden.
+
+navigation_text = "<a href=https://www.copyleft.org/>&copy;</a>"
+  + " | <a href=https://avillavecesn.net>A. Villaveces</a>:"
+  + " <a href=https://avillavecesn.net/lectures-papers-etc/>Talks</a>:"
+  + " <a href=index.html>Tertulias Matemáticas (2: Main Gap)</a>:";
+
+// "slide_set" is a list of URLs of different-resolution versions of the
+// handout displayed. It is perfectly ok for slide_set to be of length 1,
+// though multiple resolutions may give better anti-aliasing performance under 
+// many circumstances. While gliding only slide_set[0] is used.
+
+// var slide_set = [
+//  "CRMPresentation_600.jpg", "CRMPresentation.jpg", "CRMPresentation_1024.jpg",
+//  "CRMPresentation_1600.jpg"
+// ];
+
+// var slide_set = ["CRMPresentation_600.jpg"];
+// var slide_set = ["Tertulia2Poster.jpg"];
+var slide_set = ["posterA.jpg"];
+
+// "maxX" and "maxY" define the canvas size. "step" is the quantization unit
+// for coordinates. If not set, maxX and maxY default to the width and
+// height of slide_set[0] and step defaults to 1.
+
+var maxX=4960, maxY=3507, step=1;
+
+// "views" is an array containing the sequence of views to be shown. It is
+// best created by browsing through the handout and capturing rectangles
+// with the command "c" (more information will eventually be posted at Web.)
+
+var views = [  // copy
+[2101, 2600, 2906, 3036, "gap inicial"],
+[0, 0, 4960, 3507, "All"],
+[1789, 2528, 3264, 3489, "inicio"],
+[14, 3143, 510, 3487, "temas"],
+[82, 2348, 777, 2844, "shelah"],
+[557, 2909, 1377, 3488, "jerusalen 1"],
+[799, 2347, 1618, 2895, "jerusalen 2"],
+[1229, 2854, 1816, 3358, "jerusalen 3"],
+[3227, 2487, 4562, 3486, "enunciado"],
+[3113, 1948, 3929, 2529, "dibujoMainGap"],
+[4460, 2794, 4972, 3157, "suaveAspero"],
+[55, 1550, 1057, 2347, "QueClasif"],
+[1141, 1021, 2051, 1806, "TheBook"],
+[3278, 709, 4032, 1307, "CaminoMainGap"],
+[4025, 717, 4833, 1461, "LinDiv1"],
+[3180, 1323, 3926, 1965, "LinDiv2"],
+[4427, 1977, 4938, 2446, "mapa1"],
+[3870, 1417, 4865, 2103, "mapa2"],
+[581, 1154, 1193, 1561, "lemaDesc"],
+[59, 915, 647, 1321, "locusInd"],
+[21, 605, 716, 1380, "Ind2"],
+[712, 642, 1172, 1087, "aecLinDiv"],
+[4454, 66, 4951, 410, "LustroMilagroso"],
+[3575, 128, 4313, 642, "AscensoMisterio"],
+[1514, 433, 2207, 880, "GaloisShelah"],
+[448, 55, 1195, 623, "GaloisTypes"],
+[3198, 220, 3534, 482, "Ciernes"],
+[2993, 1006, 3384, 1303, "gracias"],
+[971, 1313, 4294, 3463, "final"]
+    ,]
+
+// Other options:
+
+// "glide_mode" is one of
+//   {"hyperbolic", "linear", "logarithmic", "old_linear", "old_logarithmic"}:
+// var glide_mode = "hyperbolic";
+var glide_mode = "logarithmic";
+
+var lower_resolution_while_gliding = false;
+var enable_double_buffering = true;
+
+// document.domain must be set for proper interaction with dbnvp
+// (http://katlas.math.toronto.edu/drorbn/index.php?title=Dbnvp). If you
+// don't know what that is, you can safely ignore this line.
+
+document.domain = "math.toronto.edu";
+
+// ***************************************************************
+// End HandoutBrowser.js Editable Settings
+// Unless you know what you are doing, it is best not to touch the
+// rest of this file.
+// ***************************************************************
+
+</script>
+<script src="HandoutBrowser.js"></script>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="/~drorbn/global.css">
+  <script language=JavaScript>
+    document.write("<title>"+title+"</title>");
+  </script>
+</head>
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"
+  onkeydown="keypressed(event)" onkeypress="keypressed(event)"
+  onload="loaded()" onresize="resized()" style="overflow: hidden;"
+>
+
+<script language=JavaScript>
+for (var i=0; i<=1; ++i) {
+  document.write(
+    "<div id=\"slide_div_"+i+"\" "
+    + "style=\"position: absolute;\"><img id=slide_"+i+" border=0 "
+    + "src=\""+slide_set[0]+"\" "
+    + "style=\"z-index:0; position: relative\" "
+    + "onmousedown=\"drag_start(event)\"></div>\n"
+  );
+}
+</script>
+
+<div id="text_div" style="z-index: 1;">
+
+<div style="position: absolute; top: 0px; left: 0px; text-align: left; max-width: 66%"><form name=viewform><span id="navigation_text" style="background-color:yellow;">
+<script language=JavaScript>
+  document.write(navigation_text);
+</script>
+</span>
+<span id="title_text" style="background-color:yellow;">
+<script language=JavaScript>
+  document.write("<b>"+handout_name+":</b>");
+</script>
+<select style="background-color: yellow;" name=viewselect onChange="viewselected();"></select>
+</span></form>
+</div>
+
+<div id="menu_div" style="display: none; font-size: 66%; position: absolute; bottom: 0px; left: 0px; text-align: left; "></div>
+
+<div id="help_div" style="position: absolute; top: 0px; right: 0px; text-align: right; max-width: 33%; font-size: small;"></div>
+
+<div id="BottomRight" style="position: absolute; bottom: 0px; right: 0px; text-align: right; max-width: 50%;">
+<span id="HandoutBrowser_banner" style="background-color:yellow;">Powered by <a
+href="http://katlas.math.toronto.edu/drorbn/index.php?title=HandoutBrowser.js">HandoutBrowser.js</a></span>
+<span id="info_span" style="background-color:yellow;"></span>
+</div>
+
+</div>
+
+<div id="rectangle_div" style="position: absolute; top: 0px; left: 0px; width: 150; height: 150; border-width: 3; border-style: solid; border-color: red; color: red; font-size: 150%; display: none">
+  Click, drag and release to mark capture rectangle
+</div>
+
+</body></html>
